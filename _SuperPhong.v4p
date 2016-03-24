@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta34.2.dtd" >
-   <PATCH nodename="C:\Users\Michael\Desktop\SuperPhong_Final - Refl\SuperPhong_3.v4p" systemname="SuperPhong_3" filename="C:\Users\Michael\Desktop\SuperPhong_Final - Refl\SuperPhong_3.v4p" scrollx="615" scrolly="10530" bgcolor="15329769">
+   <PATCH nodename="C:\Users\user\Desktop\Projects\Superphong\_SuperPhong.v4p" systemname="SuperPhong_3" filename="C:\Users\Michael\Desktop\SuperPhong_Final - Refl\SuperPhong_3.v4p" scrollx="1590" scrolly="8655" bgcolor="15329769">
    <NODE systemname="AspectRatio (DX11.Layer)" filename="%VVVV%\packs\dx11\nodes\plugins\VVVV.DX11.Nodes.dll" nodename="AspectRatio (DX11.Layer)" componentmode="Hidden" id="2">
    <BOUNDS type="Node" left="2375" top="19765" width="100" height="100">
    </BOUNDS>
@@ -83,7 +83,7 @@
    </BOUNDS>
    <PIN pinname="Buffer" visible="1">
    </PIN>
-   <PIN pinname="Data" visible="1" slicecount="1" values="|0.00000,0.00000,0.00000,0.00000|">
+   <PIN pinname="Data" visible="1" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
    </PIN>
    <BOUNDS type="Box" left="19050" top="15465">
    </BOUNDS>
@@ -337,7 +337,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="2105" top="10090" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="30">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="120">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -469,7 +469,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="11395" top="16130" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.1">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -841,7 +841,7 @@
    </PIN>
    <PIN pinname="Depth Buffer Format" slicecount="1" values="D32_Float">
    </PIN>
-   <PIN pinname="AA Samples per Pixel" slicecount="1" values="1">
+   <PIN pinname="AA Samples per Pixel" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Actual BackBuffer SizeXY" visible="1">
    </PIN>
@@ -861,7 +861,7 @@
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
-   <PIN pinname="XYZ" slicecount="1" visible="1" values="0.021">
+   <PIN pinname="XYZ" slicecount="1" visible="1" values="0.02">
    </PIN>
    <PIN pinname="Transform In" visible="1">
    </PIN>
@@ -1193,7 +1193,7 @@
    </PIN>
    <PIN pinname="Enabled" slicecount="1" visible="1" values="1">
    </PIN>
-   <PIN pinname="Size" slicecount="1" values="256">
+   <PIN pinname="Size" slicecount="1" values="512">
    </PIN>
    <PIN pinname="Bind Whole Target" visible="-1" pintype="Input" slicecount="1" values="0">
    </PIN>
@@ -1295,7 +1295,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="4905" top="10695" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="3" visible="1" values="0,1.57,0">
+   <PIN pinname="Y Input Value" slicecount="3" visible="1" values="0,0.97,0">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -2220,140 +2220,6 @@
    </LINK>
    <LINK srcnodeid="767" srcpinname="Y Output Value" dstnodeid="764" dstpinname="Spread Count">
    </LINK>
-   <NODE id="768" systemname="SuperPhong (DX11.Effect)" filename="dx11\SuperPhong.fx" nodename="SuperPhong (DX11.Effect)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
-   <BOUNDS type="Node" left="3245" top="16555" width="23085" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="15" top="0" width="2400" height="1800">
-   </BOUNDS>
-   <BOUNDS type="Window" left="0" top="0" width="6000" height="4500">
-   </BOUNDS>
-   <PIN pinname="refraction" slicecount="1" visible="1" values="1">
-   </PIN>
-   <PIN pinname="Geometry" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Color Overlay" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="581" srcpinname="Buffer" dstnodeid="768" dstpinname="CubeMapBounds" linkstyle="Bezier">
-   <LINKPOINT x="24215" y="15268">
-   </LINKPOINT>
-   <LINKPOINT x="23290" y="15243">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="537" srcpinname="Transform Out" dstnodeid="768" dstpinname="NormalRotation">
-   </LINK>
-   <LINK srcnodeid="546" srcpinname="Render State" dstnodeid="768" dstpinname="Render State">
-   </LINK>
-   <LINK srcnodeid="242" srcpinname="Sampler" dstnodeid="768" dstpinname="g_samLinear">
-   </LINK>
-   <LINK srcnodeid="92" srcpinname="Buffer" dstnodeid="768" dstpinname="LightView">
-   </LINK>
-   <LINK srcnodeid="406" srcpinname="Buffer" dstnodeid="768" dstpinname="tColor,tSpec,tDiffuse,tNormal">
-   </LINK>
-   <LINK srcnodeid="374" srcpinname="Buffer" dstnodeid="768" dstpinname="spotRange">
-   </LINK>
-   <LINK srcnodeid="47" srcpinname="Buffer" dstnodeid="768" dstpinname="Directional/Point/Spot" linkstyle="PolyLine">
-   </LINK>
-   <LINK srcnodeid="499" srcpinname="Transform Out" dstnodeid="768" dstpinname="Transform In">
-   </LINK>
-   <LINK srcnodeid="80" srcpinname="Buffer" dstnodeid="768" dstpinname="Specular Color" linkstyle="Bezier">
-   <LINKPOINT x="21585" y="16133">
-   </LINKPOINT>
-   <LINKPOINT x="20085" y="16133">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="79" srcpinname="Buffer" dstnodeid="768" dstpinname="Diffuse Color" linkstyle="Bezier">
-   <LINKPOINT x="20235" y="16140">
-   </LINKPOINT>
-   <LINKPOINT x="19605" y="16140">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="11" srcpinname="Buffer" dstnodeid="768" dstpinname="Ambient Color" linkstyle="Bezier">
-   <LINKPOINT x="19075" y="16133">
-   </LINKPOINT>
-   <LINKPOINT x="19085" y="16133">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="8" srcpinname="Buffer" dstnodeid="768" dstpinname="lAtt2" linkstyle="Bezier">
-   <LINKPOINT x="19890" y="15330">
-   </LINKPOINT>
-   <LINKPOINT x="18630" y="15330">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="7" srcpinname="Buffer" dstnodeid="768" dstpinname="lAtt1" linkstyle="Bezier">
-   <LINKPOINT x="18748" y="15445">
-   </LINKPOINT>
-   <LINKPOINT x="18167" y="15186">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="6" srcpinname="Buffer" dstnodeid="768" dstpinname="lAtt0" linkstyle="Bezier">
-   <LINKPOINT x="17475" y="15330">
-   </LINKPOINT>
-   <LINKPOINT x="17655" y="15330">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="10" srcpinname="Buffer" dstnodeid="768" dstpinname="lPos" linkstyle="PolyLine">
-   </LINK>
-   <LINK srcnodeid="203" srcpinname="Y Output Value" dstnodeid="768" dstpinname="lightMapFade">
-   </LINK>
-   <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="768" dstpinname="lightCount" linkstyle="Bezier" hiddenwhenlocked="0">
-   <LINKPOINT x="14100" y="14490">
-   </LINKPOINT>
-   <LINKPOINT x="10500" y="14490">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="369" srcpinname="Y Output Value" dstnodeid="768" dstpinname="bumpy">
-   </LINK>
-   <LINK srcnodeid="768" srcpinname="Layer" dstnodeid="3" dstpinname="Layer 1">
-   </LINK>
-   <LINK srcnodeid="422" srcpinname="Output Enum" dstnodeid="768" dstpinname="Technique">
-   </LINK>
-   <LINK srcnodeid="386" srcpinname="Y Output Value" dstnodeid="768" dstpinname="Fresnel Rim/Refl Min XY">
-   </LINK>
-   <LINK srcnodeid="387" srcpinname="Y Output Value" dstnodeid="768" dstpinname="Fresnel Rim/Refl Max XY">
-   </LINK>
-   <LINK srcnodeid="388" srcpinname="Y Output Value" dstnodeid="768" dstpinname="Fresnel Rim/Refl Exp XY">
-   </LINK>
-   <LINK srcnodeid="201" srcpinname="Y Output Value" dstnodeid="768" dstpinname="Light Range">
-   </LINK>
-   <LINK srcnodeid="588" srcpinname="Y Output Value" dstnodeid="768" dstpinname="BPCM">
-   </LINK>
-   <LINK srcnodeid="617" srcpinname="Buffer" dstnodeid="768" dstpinname="PlanarRefl">
-   </LINK>
-   <LINK srcnodeid="620" srcpinname="Y Output Value" dstnodeid="768" dstpinname="Reflective Cube/PlanarXY">
-   </LINK>
-   <LINK srcnodeid="614" srcpinname="Texture Out" dstnodeid="768" dstpinname="ReflTex" linkstyle="Bezier">
-   <LINKPOINT x="6555" y="21398">
-   </LINKPOINT>
-   <LINKPOINT x="24300" y="21398">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="687" srcpinname="Y Output Value" dstnodeid="768" dstpinname="CubeMap Mode Reflective/Normal">
-   </LINK>
-   <LINK srcnodeid="450" srcpinname="Texture Out" dstnodeid="768" dstpinname="LightMap">
-   </LINK>
-   <LINK srcnodeid="1" srcpinname="Camera Position" dstnodeid="768" dstpinname="camPosXYZ" linkstyle="Bezier">
-   <LINKPOINT x="4275" y="18548">
-   </LINKPOINT>
-   <LINKPOINT x="9255" y="18428">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="694" srcpinname="Texture Out" dstnodeid="768" dstpinname="CubeMap">
-   </LINK>
-   <LINK srcnodeid="155" srcpinname="Color Output" dstnodeid="768" dstpinname="Rim Color">
-   </LINK>
-   <LINK srcnodeid="666" srcpinname="Texture Out" dstnodeid="768" dstpinname="NormalMap">
-   </LINK>
-   <LINK srcnodeid="666" srcpinname="Texture Out" dstnodeid="768" dstpinname="SpecularMap">
-   </LINK>
-   <LINK srcnodeid="666" srcpinname="Texture Out" dstnodeid="768" dstpinname="DiffuseMap">
-   </LINK>
-   <LINK srcnodeid="548" srcpinname="Y Output Value" dstnodeid="768" dstpinname="CubeMapPosXYZ" linkstyle="Bezier" hiddenwhenlocked="1">
-   <LINKPOINT x="23670" y="12780">
-   </LINKPOINT>
-   <LINKPOINT x="13620" y="12780">
-   </LINKPOINT>
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="769" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="12900" top="15930" width="480" height="480">
    </BOUNDS>
@@ -2374,12 +2240,158 @@
    <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="769" srcpinname="Y Output Value" dstnodeid="768" dstpinname="refraction" linkstyle="VHV">
+   <LINK srcnodeid="40" srcpinname="Layer" dstnodeid="3" dstpinname="Layer 2">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="774" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="17640" top="17085" width="2730" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="17640" top="17085" width="2730" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|refraction too bright without diffuse|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE id="775" systemname="SuperPhong (DX11.Effect)" filename="dx11\SuperPhong.fx" nodename="SuperPhong (DX11.Effect)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Node" left="3245" top="16555" width="23085" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="15" top="0" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="6000" height="4500">
+   </BOUNDS>
+   <PIN pinname="refractionIndex" slicecount="1" values="1.2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="581" srcpinname="Buffer" dstnodeid="775" dstpinname="CubeMapBounds" linkstyle="Bezier">
+   <LINKPOINT x="24215" y="15268">
+   </LINKPOINT>
+   <LINKPOINT x="23290" y="15243">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="537" srcpinname="Transform Out" dstnodeid="775" dstpinname="NormalRotation">
+   </LINK>
+   <LINK srcnodeid="546" srcpinname="Render State" dstnodeid="775" dstpinname="Render State">
+   </LINK>
+   <LINK srcnodeid="242" srcpinname="Sampler" dstnodeid="775" dstpinname="g_samLinear">
+   </LINK>
+   <LINK srcnodeid="92" srcpinname="Buffer" dstnodeid="775" dstpinname="LightView">
+   </LINK>
+   <LINK srcnodeid="406" srcpinname="Buffer" dstnodeid="775" dstpinname="tColor,tSpec,tDiffuse,tNormal">
+   </LINK>
+   <LINK srcnodeid="374" srcpinname="Buffer" dstnodeid="775" dstpinname="spotRange">
+   </LINK>
+   <LINK srcnodeid="47" srcpinname="Buffer" dstnodeid="775" dstpinname="Directional/Point/Spot" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="499" srcpinname="Transform Out" dstnodeid="775" dstpinname="Transform In">
+   </LINK>
+   <LINK srcnodeid="80" srcpinname="Buffer" dstnodeid="775" dstpinname="Specular Color" linkstyle="Bezier">
+   <LINKPOINT x="21585" y="16133">
+   </LINKPOINT>
+   <LINKPOINT x="20085" y="16133">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="79" srcpinname="Buffer" dstnodeid="775" dstpinname="Diffuse Color" linkstyle="Bezier">
+   <LINKPOINT x="20235" y="16140">
+   </LINKPOINT>
+   <LINKPOINT x="19605" y="16140">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Buffer" dstnodeid="775" dstpinname="Ambient Color" linkstyle="Bezier">
+   <LINKPOINT x="19075" y="16133">
+   </LINKPOINT>
+   <LINKPOINT x="19085" y="16133">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Buffer" dstnodeid="775" dstpinname="lAtt2" linkstyle="Bezier">
+   <LINKPOINT x="19890" y="15330">
+   </LINKPOINT>
+   <LINKPOINT x="18630" y="15330">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Buffer" dstnodeid="775" dstpinname="lAtt1" linkstyle="Bezier">
+   <LINKPOINT x="18748" y="15445">
+   </LINKPOINT>
+   <LINKPOINT x="18167" y="15186">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Buffer" dstnodeid="775" dstpinname="lAtt0" linkstyle="Bezier">
+   <LINKPOINT x="17475" y="15330">
+   </LINKPOINT>
+   <LINKPOINT x="17655" y="15330">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Buffer" dstnodeid="775" dstpinname="lPos" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="203" srcpinname="Y Output Value" dstnodeid="775" dstpinname="lightMapFade">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="775" dstpinname="lightCount" linkstyle="Bezier" hiddenwhenlocked="0">
+   <LINKPOINT x="14100" y="14490">
+   </LINKPOINT>
+   <LINKPOINT x="10500" y="14490">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="369" srcpinname="Y Output Value" dstnodeid="775" dstpinname="bumpy">
+   </LINK>
+   <LINK srcnodeid="775" srcpinname="Layer" dstnodeid="3" dstpinname="Layer 1">
+   </LINK>
+   <LINK srcnodeid="422" srcpinname="Output Enum" dstnodeid="775" dstpinname="Technique">
+   </LINK>
+   <LINK srcnodeid="386" srcpinname="Y Output Value" dstnodeid="775" dstpinname="Fresnel Rim/Refl Min XY">
+   </LINK>
+   <LINK srcnodeid="387" srcpinname="Y Output Value" dstnodeid="775" dstpinname="Fresnel Rim/Refl Max XY">
+   </LINK>
+   <LINK srcnodeid="388" srcpinname="Y Output Value" dstnodeid="775" dstpinname="Fresnel Rim/Refl Exp XY">
+   </LINK>
+   <LINK srcnodeid="201" srcpinname="Y Output Value" dstnodeid="775" dstpinname="Light Range">
+   </LINK>
+   <LINK srcnodeid="588" srcpinname="Y Output Value" dstnodeid="775" dstpinname="BPCM">
+   </LINK>
+   <LINK srcnodeid="617" srcpinname="Buffer" dstnodeid="775" dstpinname="PlanarRefl">
+   </LINK>
+   <LINK srcnodeid="620" srcpinname="Y Output Value" dstnodeid="775" dstpinname="Reflective Cube/PlanarXY">
+   </LINK>
+   <LINK srcnodeid="614" srcpinname="Texture Out" dstnodeid="775" dstpinname="ReflTex" linkstyle="Bezier">
+   <LINKPOINT x="6555" y="21398">
+   </LINKPOINT>
+   <LINKPOINT x="24300" y="21398">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="687" srcpinname="Y Output Value" dstnodeid="775" dstpinname="CubeMap Mode Reflective/Normal">
+   </LINK>
+   <LINK srcnodeid="450" srcpinname="Texture Out" dstnodeid="775" dstpinname="LightMap">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Camera Position" dstnodeid="775" dstpinname="camPosXYZ" linkstyle="Bezier">
+   <LINKPOINT x="4275" y="18548">
+   </LINKPOINT>
+   <LINKPOINT x="9255" y="18428">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="694" srcpinname="Texture Out" dstnodeid="775" dstpinname="CubeMap">
+   </LINK>
+   <LINK srcnodeid="155" srcpinname="Color Output" dstnodeid="775" dstpinname="Rim Color">
+   </LINK>
+   <LINK srcnodeid="548" srcpinname="Y Output Value" dstnodeid="775" dstpinname="CubeMapPosXYZ" linkstyle="Bezier" hiddenwhenlocked="1">
+   <LINKPOINT x="23670" y="12780">
+   </LINKPOINT>
+   <LINKPOINT x="13620" y="12780">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="769" srcpinname="Y Output Value" dstnodeid="775" dstpinname="refraction" linkstyle="VHV">
    <LINKPOINT x="12915" y="16485">
    </LINKPOINT>
    <LINKPOINT x="12870" y="16485">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="67" srcpinname="Output" dstnodeid="768" dstpinname="Geometry">
+   <LINK srcnodeid="67" srcpinname="Output" dstnodeid="775" dstpinname="Geometry">
+   </LINK>
+   <LINK srcnodeid="666" srcpinname="Texture Out" dstnodeid="775" dstpinname="SpecularMap">
+   </LINK>
+   <LINK srcnodeid="666" srcpinname="Texture Out" dstnodeid="775" dstpinname="NormalMap">
+   </LINK>
+   <LINK srcnodeid="666" srcpinname="Texture Out" dstnodeid="775" dstpinname="DiffuseMap">
    </LINK>
    </PATCH>

@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta34.2.dtd" >
-   <PATCH nodename="C:\Users\Michael\Desktop\SuperPhong_Final - Refl\SuperPhong_3.v4p" systemname="SuperPhong_3" filename="C:\Users\Michael\Desktop\SuperPhong_Final - Refl\SuperPhong_3.v4p" scrollx="615" scrolly="10530" bgcolor="15329769">
+   <PATCH nodename="C:\Users\user\Desktop\Projects\Superphong\SuperPhong_3.v4p" systemname="SuperPhong_3" filename="C:\Users\Michael\Desktop\SuperPhong_Final - Refl\SuperPhong_3.v4p" scrollx="6870" scrolly="4560" bgcolor="15329769">
    <NODE systemname="AspectRatio (DX11.Layer)" filename="%VVVV%\packs\dx11\nodes\plugins\VVVV.DX11.Nodes.dll" nodename="AspectRatio (DX11.Layer)" componentmode="Hidden" id="2">
    <BOUNDS type="Node" left="2375" top="19765" width="100" height="100">
    </BOUNDS>
@@ -83,7 +83,7 @@
    </BOUNDS>
    <PIN pinname="Buffer" visible="1">
    </PIN>
-   <PIN pinname="Data" visible="1" slicecount="1" values="|0.00000,0.00000,0.00000,0.00000|">
+   <PIN pinname="Data" visible="1" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
    </PIN>
    <BOUNDS type="Box" left="19050" top="15465">
    </BOUNDS>
@@ -337,7 +337,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="2105" top="10090" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="30">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="120">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -469,7 +469,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="11395" top="16130" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.1">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -841,7 +841,7 @@
    </PIN>
    <PIN pinname="Depth Buffer Format" slicecount="1" values="D32_Float">
    </PIN>
-   <PIN pinname="AA Samples per Pixel" slicecount="1" values="1">
+   <PIN pinname="AA Samples per Pixel" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Actual BackBuffer SizeXY" visible="1">
    </PIN>
@@ -861,7 +861,7 @@
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
-   <PIN pinname="XYZ" slicecount="1" visible="1" values="0.021">
+   <PIN pinname="XYZ" slicecount="1" visible="1" values="0.02">
    </PIN>
    <PIN pinname="Transform In" visible="1">
    </PIN>
@@ -1295,7 +1295,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="4905" top="10695" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="3" visible="1" values="0,1.57,0">
+   <PIN pinname="Y Input Value" slicecount="3" visible="1" values="0,0.97,0">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -2233,6 +2233,14 @@
    </PIN>
    <PIN pinname="Color Overlay" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
    </PIN>
+   <PIN pinname="DiffuseMap" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="ReflectionMode: Mul/Add" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="NormalMap" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="SpecularMap" visible="1" slicecount="1" values="||">
+   </PIN>
    </NODE>
    <LINK srcnodeid="581" srcpinname="Buffer" dstnodeid="768" dstpinname="CubeMapBounds" linkstyle="Bezier">
    <LINKPOINT x="24215" y="15268">
@@ -2342,12 +2350,6 @@
    </LINK>
    <LINK srcnodeid="155" srcpinname="Color Output" dstnodeid="768" dstpinname="Rim Color">
    </LINK>
-   <LINK srcnodeid="666" srcpinname="Texture Out" dstnodeid="768" dstpinname="NormalMap">
-   </LINK>
-   <LINK srcnodeid="666" srcpinname="Texture Out" dstnodeid="768" dstpinname="SpecularMap">
-   </LINK>
-   <LINK srcnodeid="666" srcpinname="Texture Out" dstnodeid="768" dstpinname="DiffuseMap">
-   </LINK>
    <LINK srcnodeid="548" srcpinname="Y Output Value" dstnodeid="768" dstpinname="CubeMapPosXYZ" linkstyle="Bezier" hiddenwhenlocked="1">
    <LINKPOINT x="23670" y="12780">
    </LINKPOINT>
@@ -2382,4 +2384,26 @@
    </LINK>
    <LINK srcnodeid="67" srcpinname="Output" dstnodeid="768" dstpinname="Geometry">
    </LINK>
+   <LINK srcnodeid="40" srcpinname="Layer" dstnodeid="3" dstpinname="Layer 2">
+   </LINK>
+   <LINK srcnodeid="666" srcpinname="Texture Out" dstnodeid="768" dstpinname="SpecularMap">
+   </LINK>
+   <LINK srcnodeid="666" srcpinname="Texture Out" dstnodeid="768" dstpinname="NormalMap">
+   </LINK>
+   <LINK srcnodeid="666" srcpinname="Texture Out" dstnodeid="768" dstpinname="DiffuseMap">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="774" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="17640" top="17085" width="2730" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="17640" top="17085" width="2730" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|refraction too bright without diffuse|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>

@@ -35,6 +35,7 @@ cbuffer cbPerObject : register (b1)
 	float2 reflective <String uiname="Reflective Cube/Planar";float uimin=0.0; float uimax=30;> = 1 ;
 	bool BPCM;
 	bool refraction = false;
+	float refractionIndex = 1.2;
 	int cubeMapMode <String uiname="CubeMap Mode Reflective/Normal"; int uimin=0.0; int uimax=1.0;> = 0;
 	float3 cubeMapPos  <string uiname="CubeMapPos"; > = float3(0,0,0);
 	int reflectMode <string uiname="ReflectionMode: Mul/Add"; int uimin=0.0; int uimax=1.0;> = 1;
@@ -268,7 +269,7 @@ float4 PS_SuperphongBump(vs2ps In): SV_Target
 ///////////////////////////////////////
 	float3 reflVect = -reflect(Vn,Nb);
 	float3 reflVecNorm = Nn-reflect(Nn,Nb);
-	float3 refrVect = refract(-Vn, Nb , 1.1);
+	float3 refrVect = refract(-Vn, Nb , refractionIndex);
 ///////////////////////////////////////
 
 // Planar Reflection
@@ -480,7 +481,7 @@ float4 PS_Superphong(vs2ps In): SV_Target
 	
 	float3 reflVect = -reflect(Vn,Nn);
 	float3 reflVecNorm = Nn;
-	float3 refrVect = refract(-Vn, Nn , 1.1);
+	float3 refrVect = refract(-Vn, Nn , refractionIndex);
 	
 	
 // Box Projected CubeMap
