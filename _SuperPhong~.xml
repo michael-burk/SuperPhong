@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta34.2.dtd" >
-   <PATCH nodename="C:\Users\user\Desktop\Projects\Superphong\_SuperPhong.v4p" systemname="SuperPhong_3" filename="C:\Users\Michael\Desktop\SuperPhong_Final - Refl\SuperPhong_3.v4p" scrollx="1590" scrolly="8655" bgcolor="15329769">
+   <PATCH nodename="C:\Users\Michael\Desktop\SuperPhong\_SuperPhong.v4p" systemname="SuperPhong_3" filename="C:\Users\Michael\Desktop\SuperPhong_Final - Refl\SuperPhong_3.v4p" scrollx="8280" scrolly="8280" bgcolor="15329769">
    <NODE systemname="AspectRatio (DX11.Layer)" filename="%VVVV%\packs\dx11\nodes\plugins\VVVV.DX11.Nodes.dll" nodename="AspectRatio (DX11.Layer)" componentmode="Hidden" id="2">
    <BOUNDS type="Node" left="2375" top="19765" width="100" height="100">
    </BOUNDS>
@@ -305,21 +305,21 @@
    <PACK Name="addonpack" Version="34.1.0">
    </PACK>
    <NODE systemname="SceneFile (DX11.Geometry Assimp)" filename="%VVVV%\packs\dx11\nodes\plugins\VVVV.DX11.Nodes.Assimp.dll" nodename="SceneFile (DX11.Geometry Assimp)" componentmode="Hidden" id="66">
-   <BOUNDS type="Node" left="3270" top="15045" width="100" height="100">
+   <BOUNDS type="Node" left="3255" top="15045" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Reload" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Filename" slicecount="1" values="bubble.fbx">
+   <PIN pinname="Filename" slicecount="1" values="Sphere1.fbx">
    </PIN>
    <PIN pinname="Mesh" visible="1">
    </PIN>
    <PIN pinname="Scene" visible="1">
    </PIN>
-   <BOUNDS type="Box" left="3270" top="15045">
+   <BOUNDS type="Box" left="3255" top="15045">
    </BOUNDS>
    </NODE>
    <NODE systemname="Mesh (DX11.Geometry Assimp)" filename="%VVVV%\packs\dx11\nodes\plugins\VVVV.DX11.Nodes.Assimp.dll" nodename="Mesh (DX11.Geometry Assimp)" componentmode="Hidden" id="67">
-   <BOUNDS type="Node" left="3255" top="15630" width="100" height="100">
+   <BOUNDS type="Node" left="3240" top="15630" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -327,7 +327,7 @@
    </PIN>
    <PIN pinname="Mesh Index" slicecount="1" values="-1">
    </PIN>
-   <BOUNDS type="Box" left="3255" top="15630">
+   <BOUNDS type="Box" left="3240" top="15630">
    </BOUNDS>
    </NODE>
    <LINK srcnodeid="3" srcpinname="Layer Out" dstnodeid="2" dstpinname="Layer In">
@@ -337,7 +337,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="2105" top="10090" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="120">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="30">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -491,9 +491,9 @@
    </BOUNDS>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="386" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="7565" top="15035" width="435" height="480">
+   <BOUNDS type="Box" left="7505" top="15035" width="435" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="7565" top="15035" width="0" height="0">
+   <BOUNDS type="Node" left="7505" top="15035" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="2" visible="1" values="0.2,0">
    </PIN>
@@ -513,9 +513,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="387" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="8060" top="15470" width="435" height="480">
+   <BOUNDS type="Box" left="8000" top="15470" width="435" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="8060" top="15470" width="0" height="0">
+   <BOUNDS type="Node" left="8000" top="15470" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="2" visible="1" values="1,1">
    </PIN>
@@ -533,9 +533,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="388" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="8530" top="15890" width="360" height="510">
+   <BOUNDS type="Box" left="8470" top="15890" width="360" height="510">
    </BOUNDS>
-   <BOUNDS type="Node" left="8530" top="15890" width="0" height="0">
+   <BOUNDS type="Node" left="8470" top="15890" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="2" visible="1" values="1,1">
    </PIN>
@@ -825,7 +825,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="2215" top="20620" width="4000" height="3000">
    </BOUNDS>
-   <BOUNDS type="Window" left="0" top="0" width="10065" height="9825">
+   <BOUNDS type="Window" left="0" top="0" width="12600" height="15150">
    </BOUNDS>
    <PIN pinname="Layers" visible="1" slicecount="1" values="||">
    </PIN>
@@ -1975,7 +1975,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="19905" top="13245" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.1">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -1989,7 +1989,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="18690" top="13245" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.11">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.1">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -2003,7 +2003,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="17460" top="13245" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.27">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.1">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -2263,7 +2263,9 @@
    </BOUNDS>
    <BOUNDS type="Window" left="0" top="0" width="6000" height="4500">
    </BOUNDS>
-   <PIN pinname="refractionIndex" slicecount="1" values="1.2">
+   <PIN pinname="refractionIndex" slicecount="1" values="0.85">
+   </PIN>
+   <PIN pinname="CubeMap" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK srcnodeid="581" srcpinname="Buffer" dstnodeid="775" dstpinname="CubeMapBounds" linkstyle="Bezier">
@@ -2370,8 +2372,6 @@
    <LINKPOINT x="9255" y="18428">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="694" srcpinname="Texture Out" dstnodeid="775" dstpinname="CubeMap">
-   </LINK>
    <LINK srcnodeid="155" srcpinname="Color Output" dstnodeid="775" dstpinname="Rim Color">
    </LINK>
    <LINK srcnodeid="548" srcpinname="Y Output Value" dstnodeid="775" dstpinname="CubeMapPosXYZ" linkstyle="Bezier" hiddenwhenlocked="1">
@@ -2393,5 +2393,17 @@
    <LINK srcnodeid="666" srcpinname="Texture Out" dstnodeid="775" dstpinname="NormalMap">
    </LINK>
    <LINK srcnodeid="666" srcpinname="Texture Out" dstnodeid="775" dstpinname="DiffuseMap">
+   </LINK>
+   <NODE systemname="HSL (Color Join)" nodename="HSL (Color Join)" componentmode="Hidden" id="776">
+   <BOUNDS type="Node" left="18960" top="14610" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Lightness" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="776" srcpinname="Output" dstnodeid="11" dstpinname="Data">
+   </LINK>
+   <LINK srcnodeid="694" srcpinname="Texture Out" dstnodeid="775" dstpinname="CubeMap">
    </LINK>
    </PATCH>

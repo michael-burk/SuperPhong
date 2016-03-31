@@ -29,9 +29,6 @@ float4 PhongPoint(float3 PosW, float3 NormV, float3 ViewDirV, float3 LightDirV, 
        atten = 1/(saturate(lAtt0) + saturate(lAtt1) * d + saturate(lAtt2) * pow(d, 2));
     }
 
-    float4 amb = lAmb * atten;
-    amb.a = 1;
-
     //halfvector
     float3 H = normalize(ViewDirV + LightDirV);
 
@@ -52,7 +49,7 @@ float4 PhongPoint(float3 PosW, float3 NormV, float3 ViewDirV, float3 LightDirV, 
 	
     spec *= specIntensity;
 
-    result =  (amb + diff) + spec;
+    result =  diff + spec;
 
 
     return result;

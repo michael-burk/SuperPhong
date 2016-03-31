@@ -424,6 +424,7 @@ reflectionColor = reflTex.Sample(g_samLinearRefl, reflectTexCoord+(bumpMap.xy*bu
 				break;
 		}
 		
+		newCol += lAmb[0];
 	}
 
 	if(reflectMode == 0){
@@ -544,7 +545,7 @@ reflectionColor = reflTex.Sample(g_samLinearRefl, reflectTexCoord);
 	
 	
 	float4 reflColor;
-	float4 refrColor;
+	float4 refrColor = float4(0,0,0,0);
 
 	
 	if(cubeMapMode == 0){
@@ -639,6 +640,8 @@ reflectionColor = reflTex.Sample(g_samLinearRefl, reflectTexCoord);
 			
 				break;
 		}
+		
+		newCol += lAmb[0];
 		
 	}
 
