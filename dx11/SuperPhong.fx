@@ -181,7 +181,6 @@ vs2ps VS(
 //	position (projected)
     Out.PosWVP  = mul(PosO, tWVP);
 
-//  Out.TexCd = mul(TexCd, tTex);
 	Out.TexCd = TexCd;
     Out.ViewDirV = -normalize(mul(PosO, tWV).xyz);
 	
@@ -304,7 +303,7 @@ float4 PS_SuperphongBump(vs2ps In): SV_Target
 	float4 refrColor = float4(0,0,0,0);
 	
 	if(cubeMapMode == 0){
-		reflColor = cubeTex.Sample(g_samLinear,float3(reflVect.x, reflVect.y, reflVect.z));	
+		reflColor += cubeTex.Sample(g_samLinear,float3(reflVect.x, reflVect.y, reflVect.z));
 		if(refraction) refrColor = cubeTex.Sample(g_samLinear,float3(refrVect.x, refrVect.y, refrVect.z));
 		reflColor = lerp(refrColor,reflColor,fresRefl);
 	}
