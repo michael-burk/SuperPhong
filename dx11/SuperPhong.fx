@@ -32,7 +32,7 @@ cbuffer cbPerObject : register (b1)
 	
 	float lightMapFade = 1;
 	float bumpy = 1;
-	float2 reflective <String uiname="Reflective Cube/Planar";float uimin=0.0; float uimax=30;> = 1 ;
+	float reflective <String uiname="Reflective";float uimin=0.0; float uimax=30;> = 1 ;
 	bool BPCM;
 	bool refraction = false;
 	float refractionIndex = 1.2;
@@ -66,9 +66,6 @@ cbuffer cbPerObject : register (b1)
 	Texture2DArray lightMap <string uiname="LightMap"; >;
 
 	StructuredBuffer <float3> cubeMapBoxBounds <string uiname="CubeMapBounds";>;
-	StructuredBuffer <float4x4> planarRefl <string uiname="PlanarRefl";>;
-	
-	Texture2D reflTex <string uiname="ReflTex"; >;
 
 #include "PhongPoint.fxh"
 #include "PhongPointSpot.fxh"
@@ -155,17 +152,6 @@ vs2ps VS_Bump(
 	Out.TexCd = TexCd;
     Out.ViewDirV = -normalize(mul(PosO, tWV).xyz);
 	
-// Planar Reflection
-/////////////////////////////
-	float4x4 reflectProjectWorld;
-	
-	 // Create the reflection projection world matrix.
-    reflectProjectWorld = mul(planarRefl[0], tP);
-    reflectProjectWorld = mul(tW, reflectProjectWorld);
-	
-	// Calculate the input position against the reflectProjectWorld matrix.
-    Out.reflectionPosition = mul(PosO, reflectProjectWorld);
-////////////////////////////
 	
     return Out;
 }
@@ -199,17 +185,6 @@ vs2ps VS(
 	Out.TexCd = TexCd;
     Out.ViewDirV = -normalize(mul(PosO, tWV).xyz);
 	
-// Planar Reflection
-/////////////////////////////
-	float4x4 reflectProjectWorld;
-	
-	 // Create the reflection projection world matrix.
-    reflectProjectWorld = mul(planarRefl[0], tP);
-    reflectProjectWorld = mul(tW, reflectProjectWorld);
-	
-	// Calculate the input position against the reflectProjectWorld matrix.
-    Out.reflectionPosition = mul(PosO, reflectProjectWorld);
-////////////////////////////
 
 	
     return Out;
@@ -272,16 +247,6 @@ float4 PS_SuperphongBump(vs2ps In): SV_Target
 	float3 refrVect = refract(-Vn, Nb , refractionIndex);
 ///////////////////////////////////////
 
-// Planar Reflection
-//Texture2D reflectionTexture;
-
-// Calculate the projected reflection texture coordinates.
-reflectTexCoord.x = In.reflectionPosition.x / In.reflectionPosition.w / 2.0f + 0.5f;
-reflectTexCoord.y = -In.reflectionPosition.y / In.reflectionPosition.w / 2.0f + 0.5f;
-
-// Sample the texture pixel from the reflection texture using the projected texture coordinates.
-reflectionColor = reflTex.Sample(g_samLinearRefl, reflectTexCoord+(bumpMap.xy*bumpy));
-
 	
 	
 	// Box Projected CubeMap
@@ -335,7 +300,7 @@ reflectionColor = reflTex.Sample(g_samLinearRefl, reflectTexCoord+(bumpMap.xy*bu
 	float vdn = -saturate(dot(Vn,In.NormW));
    	float fresRim = KrMin.x + (Kr.x-KrMin.x) * pow(1-abs(vdn),FresExp.x);
 	float fresRefl = KrMin.y + (Kr.y-KrMin.y) * pow(1-abs(vdn),FresExp.y);
-	float4 reflColor;
+	float4 reflColor = float4(0,0,0,0);
 	float4 refrColor = float4(0,0,0,0);
 	
 	if(cubeMapMode == 0){
@@ -350,7 +315,6 @@ reflectionColor = reflTex.Sample(g_samLinearRefl, reflectTexCoord+(bumpMap.xy*bu
 	
 	if(diffuseMode == 0 || diffuseMode ==2){
 			reflColor *= length(diffuse.rgb);
-			reflectionColor *= length(diffuse.rgb);
 			
 	} 
 	
@@ -430,12 +394,10 @@ reflectionColor = reflTex.Sample(g_samLinearRefl, reflectTexCoord+(bumpMap.xy*bu
 	if(reflectMode == 0){
 		newCol *= (reflColor*reflective.x);
 		newCol += (fresRim * RimColor);
-		newCol += reflectionColor*reflective.y;
 		
 	} else{
 		newCol += (reflColor*reflective.x);
 		newCol += (fresRim * RimColor);
-		newCol += reflectionColor*reflective.y;
 	}	
 
 	col *= float4((newCol * Color.rgb), Alpha);
@@ -532,19 +494,7 @@ float4 PS_Superphong(vs2ps In): SV_Target
 	
 ////////////////////////////////////////////////////
 	
-// Planar Reflection
-//Texture2D reflectionTexture;
-
-// Calculate the projected reflection texture coordinates.
-reflectTexCoord.x = In.reflectionPosition.x / In.reflectionPosition.w / 2.0f + 0.5f;
-reflectTexCoord.y = -In.reflectionPosition.y / In.reflectionPosition.w / 2.0f + 0.5f;
-
-// Sample the texture pixel from the reflection texture using the projected texture coordinates.
-reflectionColor = reflTex.Sample(g_samLinearRefl, reflectTexCoord);
-
-	
-	
-	float4 reflColor;
+	float4 reflColor = float4(0,0,0,0);
 	float4 refrColor = float4(0,0,0,0);
 
 	
@@ -563,9 +513,7 @@ reflectionColor = reflTex.Sample(g_samLinearRefl, reflectTexCoord);
 	}
 	
 	if(diffuseMode == 0 || diffuseMode ==2){
-			reflColor *= length(diffuse.rgb);
-			reflectionColor *= length(diffuse.rgb);
-			
+			reflColor *= length(diffuse.rgb);			
 	} 
 	
 	
@@ -649,12 +597,10 @@ reflectionColor = reflTex.Sample(g_samLinearRefl, reflectTexCoord);
 	if(reflectMode == 0){
 		newCol *= (reflColor*reflective.x);
 		newCol += (fresRim * RimColor);
-		newCol += reflectionColor*reflective.y;
 		
 	} else{
 		newCol += (reflColor*reflective.x);
 		newCol += (fresRim * RimColor);
-		newCol += reflectionColor*reflective.y;
 	}	
 	
 	
