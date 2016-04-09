@@ -12,12 +12,6 @@ cbuffer cbPerRender : register( b0 )
 {
 	float4x4 tP: PROJECTION;   //projection matrix as set via Renderer
 	float4x4 tV: VIEW;         //view matrix as set via Renderer
-	float2 KrMin <String uiname="Fresnel Rim/Refl Min ";float uimin=0.0; float uimax=1;> = 0.002 ;
-	float2 Kr <String uiname="Fresnel Rim/Refl Max ";float uimin=0.0; float uimax=6.0;> = 0.5 ;
-	float2 FresExp <String uiname="Fresnel Rim/Refl Exp ";float uimin=0.0; float uimax=30;> = 5 ;
-	float3 camPos;
-	float4 RimColor <bool color = true; string uiname="Rim Color";>  = { 0.0f,0.0f,0.0f,0.0f };
-	float4 Color <bool color = true; string uiname="Color Overlay";>  = { 1.0f,1.0f,1.0f,1.0f };
 };
  
 cbuffer cbPerObject : register (b1)
@@ -27,20 +21,29 @@ cbuffer cbPerObject : register (b1)
 	float4x4 tWV: WORLDVIEW;
 	float4x4 tWVP: WORLDVIEWPROJECTION;
 	float4x4 tWIT: WORLDINVERSETRANSPOSE;
+};
+
+	float2 KrMin <String uiname="Fresnel Rim/Refl Min ";float uimin=0.0; float uimax=1;> = 0.002 ;
+	float2 Kr <String uiname="Fresnel Rim/Refl Max ";float uimin=0.0; float uimax=6.0;> = 0.5 ;
+	float2 FresExp <String uiname="Fresnel Rim/Refl Exp ";float uimin=0.0; float uimax=30;> = 5 ;
+	float3 camPos;
+	float4 RimColor <bool color = true; string uiname="Rim Color";>  = { 0.0f,0.0f,0.0f,0.0f };
+	float4 Color <bool color = true; string uiname="Color Overlay";>  = { 1.0f,1.0f,1.0f,1.0f };
+	float Alpha <float uimin=0.0; float uimax=1.0;> = 1;
 
 	int lightCount <string uiname="lightCount";>;
 	
 	float spotFade = 1;
 	float bumpy = 1;
 	float2 reflective <String uiname="Reflective/Diffuse";float uimin=0.0; float uimax=30;> = 1 ;
-	bool BPCM;
-	bool refraction = false;
-	float refractionIndex = 1.2;
-	int cubeMapMode <String uiname="CubeMap Mode Reflective/Normal"; int uimin=0.0; int uimax=1.0;> = 0;
-	float3 cubeMapPos  <string uiname="CubeMapPos"; > = float3(0,0,0);
-	int reflectMode <string uiname="ReflectionMode: Mul/Add"; int uimin=0.0; int uimax=1.0;> = 1;
-	int diffuseMode <string uiname="DiffuseAffect: Reflection/Specular/Both"; int uimin=0.0; int uimax=2.0;> = 0;
-};
+	bool refraction <bool visible=false;> = false;
+	float refractionIndex <bool visible=false;> = 1.2;
+	bool BPCM <bool visible=false;> = false;
+	float3 cubeMapPos  <bool visible=false;string uiname="CubeMapPos"; > = float3(0,0,0);
+	StructuredBuffer <float3> cubeMapBoxBounds <bool visible=false;string uiname="CubeMapBounds";>;
+	int reflectMode <bool visible=false;string uiname="ReflectionMode: Mul/Add"; int uimin=0.0; int uimax=1.0;> = 1;
+	int diffuseMode <bool visible=false;string uiname="DiffuseAffect: Reflection/Specular/Both"; int uimin=0.0; int uimax=2.0;> = 2;
+
 	
 	float4x4 NormalTransform <string uiname="NormalRotation";>;
 
@@ -66,7 +69,6 @@ cbuffer cbPerObject : register (b1)
 	TextureCube cubeTexDiffuse <string uiname="CubeMap Diffuse"; >;
 	Texture2DArray lightMap <string uiname="SpotTex"; >;
 
-	StructuredBuffer <float3> cubeMapBoxBounds <string uiname="CubeMapBounds";>;
 
 #include "PhongPoint.fxh"
 #include "PhongPointSpot.fxh"
@@ -77,13 +79,6 @@ SamplerState g_samLinear
     Filter = MIN_MAG_MIP_LINEAR;
     AddressU = Clamp;
     AddressV = Clamp;
-};
-
-SamplerState g_samLinearRefl
-{
-    Filter = MIN_MAG_MIP_LINEAR;
-    AddressU = BORDER;
-    AddressV = BORDER;
 };
 
 
@@ -128,8 +123,6 @@ vs2ps VS_Bump(
 
     Out.PosW = mul(PosO, tW).xyz;
 	Out.PosO = PosO;
-	
-   // Out.NormW = mul(NormO, tW);
 	
 	Out.NormW = mul(NormO, NormalTransform);
 	
@@ -193,7 +186,7 @@ vs2ps VS(
 // -----------------------------------------------------------------------------
 // PIXELSHADERS:
 // -----------------------------------------------------------------------------
-float Alpha <float uimin=0.0; float uimax=1.0;> = 1;
+
 
 float4 PS_SuperphongBump(vs2ps In): SV_Target
 {	
