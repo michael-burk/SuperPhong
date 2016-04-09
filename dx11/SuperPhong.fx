@@ -30,7 +30,7 @@ cbuffer cbPerObject : register (b1)
 
 	int lightCount <string uiname="lightCount";>;
 	
-	float lightMapFade = 1;
+	float spotFade = 1;
 	float bumpy = 1;
 	float2 reflective <String uiname="Reflective/Diffuse";float uimin=0.0; float uimax=30;> = 1 ;
 	bool BPCM;
@@ -64,7 +64,7 @@ cbuffer cbPerObject : register (b1)
 	Texture2D diffuseTex <string uiname="DiffuseMap"; >;
 	TextureCube cubeTexRefl <string uiname="CubeMap Refl"; >;
 	TextureCube cubeTexDiffuse <string uiname="CubeMap Diffuse"; >;
-	Texture2DArray lightMap <string uiname="LightMap"; >;
+	Texture2DArray lightMap <string uiname="SpotTex"; >;
 
 	StructuredBuffer <float3> cubeMapBoxBounds <string uiname="CubeMapBounds";>;
 
@@ -378,7 +378,7 @@ float4 PS_SuperphongBump(vs2ps In): SV_Target
 					
 					float3 coords = float3(projectTexCoord, i % textureCount);	//make sure Instance ID buffer is in floats
 					projectionColor = lightMap.Sample(g_samLinear, coords, 0 );
-					projectionColor *= saturate(1/(viewPosition.z*lightMapFade));					
+					projectionColor *= saturate(1/(viewPosition.z*spotFade));					
 					LightDirW = normalize(lightToObject);
 					LightDirV = mul(float4(LightDirW,0.0f), tV).xyz;
 			  		newCol += PhongPointSpot(In.PosW, In.NormV, In.ViewDirV, LightDirV, lPos[i], lAtt0[i%numlAtt0],lAtt1[i%numlAtt1],lAtt2[i%numlAtt2], lAmb[i%numlAmb], lDiff[i%numlDiff], lSpec[i%numlSpec],specIntensity, projectTexCoord,projectionColor).rgb;
@@ -392,12 +392,12 @@ float4 PS_SuperphongBump(vs2ps In): SV_Target
 	}
 
 	if(reflectMode == 0){
-		newCol *= (reflColor*reflective.x);
+		newCol *= (reflColor*reflective.x*specIntensity);
 		newCol += reflColorNorm*reflective.y;
 		newCol += (fresRim * RimColor);
 		
 	} else{
-		newCol += (reflColor*reflective.x);
+		newCol += (reflColor*reflective.x*specIntensity);
 		newCol += reflColorNorm*reflective.y;
 		newCol += (fresRim * RimColor);
 	}	
@@ -579,7 +579,7 @@ float4 PS_Superphong(vs2ps In): SV_Target
 					
 					float3 coords = float3(projectTexCoord, i % textureCount);	//make sure Instance ID buffer is in floats
 					projectionColor = lightMap.Sample(g_samLinear, coords, 0 );
-					projectionColor *= saturate(1/(viewPosition.z*lightMapFade));					
+					projectionColor *= saturate(1/(viewPosition.z*spotFade));					
 					LightDirW = normalize(lightToObject);
 					LightDirV = mul(float4(LightDirW,0.0f), tV).xyz;
 			  		newCol += PhongPointSpot(In.PosW, In.NormV, In.ViewDirV, LightDirV, lPos[i], lAtt0[i%numlAtt0],lAtt1[i%numlAtt1],lAtt2[i%numlAtt2], lAmb[i%numlAmb], lDiff[i%numlDiff], lSpec[i%numlSpec],specIntensity, projectTexCoord,projectionColor).rgb;
@@ -595,12 +595,12 @@ float4 PS_Superphong(vs2ps In): SV_Target
 
 	
 	if(reflectMode == 0){
-		newCol *= (reflColor*reflective.x);
+		newCol *= (reflColor*reflective.x*specIntensity);
 		newCol += reflColorNorm * reflective.y;
 		newCol += (fresRim * RimColor);
 		
 	} else{
-		newCol += (reflColor*reflective.x);
+		newCol += (reflColor*reflective.x*specIntensity);
 		newCol += reflColorNorm * reflective.y;
 		newCol += (fresRim * RimColor);
 	}	
