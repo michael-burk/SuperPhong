@@ -7,7 +7,7 @@
 //float4 lDiff <bool color=true; String uiname="Diffuse Color";>  = {0.85, 0.85, 0.85, 1};
 //float4 lSpec <bool color=true; String uiname="Specular Color";> = {0.35, 0.35, 0.35, 1};
 float lPower <String uiname="Power"; float uimin=0.0;> = 25.0;     //shininess of specular highlight
-float specPower <String uiname="SpecPower"; float uimin=0.01;> = 1.0;
+//float specPower <String uiname="SpecPower"; float uimin=0.01;> = 1.0;
 float lRange <String uiname="Light Range"; float uimin=0.0;> = 10.0;
 
 
@@ -45,7 +45,7 @@ float4 PhongPoint(float3 PosW, float3 NormV, float3 ViewDirV, float3 LightDirV, 
     float3 V = normalize(ViewDirV);
 
     //calculate specular light
-    float4 spec = pow(max(dot(R, V),0), specPower) * lSpec;
+    float4 spec = pow(max(dot(R, V),0), lPower) * lSpec;
 	
     spec *= specIntensity;
 

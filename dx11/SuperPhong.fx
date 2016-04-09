@@ -22,7 +22,8 @@ cbuffer cbPerObject : register (b1)
 	float4x4 tWVP: WORLDVIEWPROJECTION;
 	float4x4 tWIT: WORLDINVERSETRANSPOSE;
 };
-
+	
+	float4x4 NormalTransform <string uiname="NormalRotation";>;
 	float2 KrMin <String uiname="Fresnel Rim/Refl Min ";float uimin=0.0; float uimax=1;> = 0.002 ;
 	float2 Kr <String uiname="Fresnel Rim/Refl Max ";float uimin=0.0; float uimax=6.0;> = 0.5 ;
 	float2 FresExp <String uiname="Fresnel Rim/Refl Exp ";float uimin=0.0; float uimax=30;> = 5 ;
@@ -44,9 +45,6 @@ cbuffer cbPerObject : register (b1)
 	int reflectMode <bool visible=false;string uiname="ReflectionMode: Mul/Add"; int uimin=0.0; int uimax=1.0;> = 1;
 	int diffuseMode <bool visible=false;string uiname="DiffuseAffect: Reflection/Specular/Both"; int uimin=0.0; int uimax=2.0;> = 2;
 
-	
-	float4x4 NormalTransform <string uiname="NormalRotation";>;
-
 	StructuredBuffer <float4x4> texTransforms <string uiname="tColor,tSpec,tDiffuse,tNormal";>;
 	StructuredBuffer <float4x4> LightVP <string uiname="LightView";>;
 	StructuredBuffer <float> spotRange <string uiname="spotRange";>;
@@ -65,8 +63,9 @@ cbuffer cbPerObject : register (b1)
 	Texture2D specTex <string uiname="SpecularMap"; >;
 	Texture2D normalTex <string uiname="NormalMap"; >;
 	Texture2D diffuseTex <string uiname="DiffuseMap"; >;
+	Texture2D iridescence <string uiname="Iridescence"; >;
 	TextureCube cubeTexRefl <string uiname="CubeMap Refl"; >;
-	TextureCube cubeTexDiffuse <string uiname="CubeMap Diffuse"; >;
+	TextureCube cubeTexIrradiance <string uiname="CubeMap Irradiance"; >;
 	Texture2DArray lightMap <string uiname="SpotTex"; >;
 
 
@@ -239,8 +238,8 @@ float4 PS_SuperphongBump(vs2ps In): SV_Target
 	float3 reflVecNorm = Nn-reflect(Nn,Nb);
 	float3 refrVect = refract(-Vn, Nb , refractionIndex);
 ///////////////////////////////////////
-
 	
+
 	
 	// Box Projected CubeMap
 	////////////////////////////////////////////////////
@@ -299,12 +298,14 @@ float4 PS_SuperphongBump(vs2ps In): SV_Target
 	float4 refrColor = float4(0,0,0,0);
 	
 		reflColor = cubeTexRefl.Sample(g_samLinear,float3(reflVect.x, reflVect.y, reflVect.z));
-		reflColorNorm =  cubeTexDiffuse.Sample(g_samLinear,reflVecNorm);
+		reflColorNorm =  cubeTexIrradiance.Sample(g_samLinear,reflVecNorm);
 		if(refraction) refrColor = cubeTexRefl.Sample(g_samLinear,float3(refrVect.x, refrVect.y, refrVect.z));
 		reflColor = lerp(refrColor,reflColor,fresRefl);
 
-	
-
+		float inverseDotView = 1.0 - max(dot(Nb,Vn),0.0);
+		float4 iridescenceColor = float4(0,0,0,0);
+		iridescenceColor = iridescence.Sample(g_samLinear, float2(inverseDotView,0))*fresRefl;
+		
 	
 	if(diffuseMode == 0 || diffuseMode ==2){
 			reflColor *= length(diffuse.rgb);
@@ -385,12 +386,12 @@ float4 PS_SuperphongBump(vs2ps In): SV_Target
 	}
 
 	if(reflectMode == 0){
-		newCol *= (reflColor*reflective.x*specIntensity);
+		newCol *= (reflColor+iridescenceColor)*reflective.x*specIntensity;
 		newCol += reflColorNorm*reflective.y;
 		newCol += (fresRim * RimColor);
 		
 	} else{
-		newCol += (reflColor*reflective.x*specIntensity);
+		newCol += (reflColor+iridescenceColor)*reflective.x*specIntensity;
 		newCol += reflColorNorm*reflective.y;
 		newCol += (fresRim * RimColor);
 	}	
@@ -497,10 +498,14 @@ float4 PS_Superphong(vs2ps In): SV_Target
 
 		
 		reflColor = cubeTexRefl.Sample(g_samLinear,float3(reflVect.x, reflVect.y, reflVect.z));
-		reflColorNorm =  cubeTexDiffuse.Sample(g_samLinear,reflVecNorm);
+		reflColorNorm =  cubeTexIrradiance.Sample(g_samLinear,reflVecNorm);
 		if(refraction) refrColor = cubeTexRefl.Sample(g_samLinear,float3(refrVect.x, refrVect.y, refrVect.z));
 		reflColor = lerp(refrColor,reflColor,fresRefl);
+		
 	
+		float inverseDotView = 1.0 - max(dot(Nn,Vn),0.0);
+		float4 iridescenceColor = float4(0,0,0,0);
+		iridescenceColor = iridescence.Sample(g_samLinear, float2(inverseDotView,0))*fresRefl;
 
 	
 	
@@ -571,7 +576,7 @@ float4 PS_Superphong(vs2ps In): SV_Target
 					
 					
 					float3 coords = float3(projectTexCoord, i % textureCount);	//make sure Instance ID buffer is in floats
-					projectionColor = lightMap.Sample(g_samLinear, coords, 0 );
+	w				projectionColor = lightMap.Sample(g_samLinear, coords, 0 );
 					projectionColor *= saturate(1/(viewPosition.z*spotFade));					
 					LightDirW = normalize(lightToObject);
 					LightDirV = mul(float4(LightDirW,0.0f), tV).xyz;
@@ -588,12 +593,12 @@ float4 PS_Superphong(vs2ps In): SV_Target
 
 	
 	if(reflectMode == 0){
-		newCol *= (reflColor*reflective.x*specIntensity);
+		newCol *= (reflColor+iridescenceColor)*reflective.x*specIntensity;
 		newCol += reflColorNorm * reflective.y;
 		newCol += (fresRim * RimColor);
 		
 	} else{
-		newCol += (reflColor*reflective.x*specIntensity);
+		newCol += (reflColor+iridescenceColor)*reflective.x*specIntensity;
 		newCol += reflColorNorm * reflective.y;
 		newCol += (fresRim * RimColor);
 	}	
