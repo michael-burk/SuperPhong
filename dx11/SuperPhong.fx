@@ -32,7 +32,7 @@ cbuffer cbPerObject : register (b1)
 	
 	float lightMapFade = 1;
 	float bumpy = 1;
-	float reflective <String uiname="Reflective";float uimin=0.0; float uimax=30;> = 1 ;
+	float2 reflective <String uiname="Reflective/Diffuse";float uimin=0.0; float uimax=30;> = 1 ;
 	bool BPCM;
 	bool refraction = false;
 	float refractionIndex = 1.2;
@@ -62,7 +62,8 @@ cbuffer cbPerObject : register (b1)
 	Texture2D specTex <string uiname="SpecularMap"; >;
 	Texture2D normalTex <string uiname="NormalMap"; >;
 	Texture2D diffuseTex <string uiname="DiffuseMap"; >;
-	TextureCube cubeTex <string uiname="CubeMap"; >;
+	TextureCube cubeTexRefl <string uiname="CubeMap Refl"; >;
+	TextureCube cubeTexDiffuse <string uiname="CubeMap Diffuse"; >;
 	Texture2DArray lightMap <string uiname="LightMap"; >;
 
 	StructuredBuffer <float3> cubeMapBoxBounds <string uiname="CubeMapBounds";>;
@@ -257,6 +258,7 @@ float4 PS_SuperphongBump(vs2ps In): SV_Target
 		float3 rbmax = (cubeMapBoxBounds[0] - (In.PosW))/reflVect;
 		float3 rbmin = (cubeMapBoxBounds[1] - (In.PosW))/reflVect;
 		
+		
 		float3 rbminmax = (reflVect>0.0f)?rbmax:rbmin;
 		
 		float fa = min(min(rbminmax.x, rbminmax.y), rbminmax.z);
@@ -264,7 +266,7 @@ float4 PS_SuperphongBump(vs2ps In): SV_Target
 		float3 posonbox = In.PosW + reflVect*fa;
 		reflVect = posonbox - cubeMapPos;
 		
-		if(cubeMapMode == 1){
+		//if(cubeMapMode == 1){
 				
 		
 			rbmax = (cubeMapBoxBounds[0] - (In.PosW))/reflVecNorm;
@@ -277,7 +279,7 @@ float4 PS_SuperphongBump(vs2ps In): SV_Target
 			posonbox = In.PosW + reflVecNorm*fa;
 			reflVecNorm = posonbox - cubeMapPos;
 			
-		}
+		//}
 		
 		if(refraction){
 			rbmax = (cubeMapBoxBounds[0] - (In.PosW))/refrVect;
@@ -300,21 +302,20 @@ float4 PS_SuperphongBump(vs2ps In): SV_Target
    	float fresRim = KrMin.x + (Kr.x-KrMin.x) * pow(1-abs(vdn),FresExp.x);
 	float fresRefl = KrMin.y + (Kr.y-KrMin.y) * pow(1-abs(vdn),FresExp.y);
 	float4 reflColor = float4(0,0,0,0);
+	float4 reflColorNorm = float4(0,0,0,0);
 	float4 refrColor = float4(0,0,0,0);
 	
-	if(cubeMapMode == 0){
-		reflColor += cubeTex.Sample(g_samLinear,float3(reflVect.x, reflVect.y, reflVect.z));
-		if(refraction) refrColor = cubeTex.Sample(g_samLinear,float3(refrVect.x, refrVect.y, refrVect.z));
+		reflColor = cubeTexRefl.Sample(g_samLinear,float3(reflVect.x, reflVect.y, reflVect.z));
+		reflColorNorm =  cubeTexDiffuse.Sample(g_samLinear,reflVecNorm);
+		if(refraction) refrColor = cubeTexRefl.Sample(g_samLinear,float3(refrVect.x, refrVect.y, refrVect.z));
 		reflColor = lerp(refrColor,reflColor,fresRefl);
-	}
+
 	
-	if(cubeMapMode == 1){
-		reflColor =  cubeTex.Sample(g_samLinear,reflVecNorm);		
-	}
+
 	
 	if(diffuseMode == 0 || diffuseMode ==2){
 			reflColor *= length(diffuse.rgb);
-			
+			reflColorNorm *= length(diffuse.rgb);			
 	} 
 	
 	uint d,textureCount;
@@ -392,10 +393,12 @@ float4 PS_SuperphongBump(vs2ps In): SV_Target
 
 	if(reflectMode == 0){
 		newCol *= (reflColor*reflective.x);
+		newCol += reflColorNorm*reflective.y;
 		newCol += (fresRim * RimColor);
 		
 	} else{
 		newCol += (reflColor*reflective.x);
+		newCol += reflColorNorm*reflective.y;
 		newCol += (fresRim * RimColor);
 	}	
 
@@ -462,7 +465,7 @@ float4 PS_Superphong(vs2ps In): SV_Target
 		float3 posonbox = In.PosW + reflVect*fa;
 		reflVect = posonbox - cubeMapPos;
 		
-		if(cubeMapMode == 1){
+	//	if(cubeMapMode == 1){
 				
 		
 			rbmax = (cubeMapBoxBounds[0] - (In.PosW))/reflVecNorm;
@@ -475,7 +478,7 @@ float4 PS_Superphong(vs2ps In): SV_Target
 			posonbox = In.PosW + reflVecNorm*fa;
 			reflVecNorm = posonbox - cubeMapPos;
 			
-		}
+		//}
 		
 		if(refraction){
 			rbmax = (cubeMapBoxBounds[0] - (In.PosW))/refrVect;
@@ -494,25 +497,23 @@ float4 PS_Superphong(vs2ps In): SV_Target
 ////////////////////////////////////////////////////
 	
 	float4 reflColor = float4(0,0,0,0);
+	float4 reflColorNorm = float4(0,0,0,0);
 	float4 refrColor = float4(0,0,0,0);
 
 	
-	if(cubeMapMode == 0){
+
 		
-		//reflColor = fresRefl * cubeTex.Sample(g_samLinear,float3(reflVect.x, reflVect.y, reflVect.z));
-		reflColor = cubeTex.Sample(g_samLinear,float3(reflVect.x, reflVect.y, reflVect.z));	
-		if(refraction) refrColor = cubeTex.Sample(g_samLinear,float3(refrVect.x, refrVect.y, refrVect.z));
+		reflColor = cubeTexRefl.Sample(g_samLinear,float3(reflVect.x, reflVect.y, reflVect.z));
+		reflColorNorm =  cubeTexDiffuse.Sample(g_samLinear,reflVecNorm);
+		if(refraction) refrColor = cubeTexRefl.Sample(g_samLinear,float3(refrVect.x, refrVect.y, refrVect.z));
 		reflColor = lerp(refrColor,reflColor,fresRefl);
-	}
 	
-	if(cubeMapMode == 1){
-		
-		reflColor =  cubeTex.Sample(g_samLinear,reflVecNorm);	
-		 	
-	}
+
+	
 	
 	if(diffuseMode == 0 || diffuseMode ==2){
-			reflColor *= length(diffuse.rgb);			
+			reflColor *= length(diffuse.rgb);
+			reflColorNorm *= length(diffuse.rgb);	
 	} 
 	
 	
@@ -595,10 +596,12 @@ float4 PS_Superphong(vs2ps In): SV_Target
 	
 	if(reflectMode == 0){
 		newCol *= (reflColor*reflective.x);
+		newCol += reflColorNorm * reflective.y;
 		newCol += (fresRim * RimColor);
 		
 	} else{
 		newCol += (reflColor*reflective.x);
+		newCol += reflColorNorm * reflective.y;
 		newCol += (fresRim * RimColor);
 	}	
 	
