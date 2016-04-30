@@ -576,7 +576,7 @@ float4 PS_Superphong(vs2ps In): SV_Target
 					
 					
 					float3 coords = float3(projectTexCoord, i % textureCount);	//make sure Instance ID buffer is in floats
-	w				projectionColor = lightMap.Sample(g_samLinear, coords, 0 );
+					projectionColor = lightMap.Sample(g_samLinear, coords, 0 );
 					projectionColor *= saturate(1/(viewPosition.z*spotFade));					
 					LightDirW = normalize(lightToObject);
 					LightDirV = mul(float4(LightDirW,0.0f), tV).xyz;
