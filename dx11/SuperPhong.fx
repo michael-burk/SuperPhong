@@ -45,7 +45,7 @@ cbuffer cbPerObject : register (b1)
 	int reflectMode <bool visible=false;string uiname="ReflectionMode: Mul/Add"; int uimin=0.0; int uimax=1.0;> = 1;
 	int diffuseMode <bool visible=false;string uiname="DiffuseAffect: Reflection/Specular/Both"; int uimin=0.0; int uimax=2.0;> = 2;
 
-	StructuredBuffer <float4x4> texTransforms <string uiname="tColor,tSpec,tDiffuse,tNormal";>;
+//	StructuredBuffer <float4x4> texTransforms <string uiname="tColor,tSpec,tDiffuse,tNormal";>;
 	StructuredBuffer <float4x4> LightVP <string uiname="LightView";>;
 	StructuredBuffer <float> spotRange <string uiname="spotRange";>;
 	StructuredBuffer <int> lightType <string uiname="Directional/Point/Spot";>;	
@@ -198,14 +198,19 @@ float4 PS_SuperphongBump(vs2ps In): SV_Target
 	float2 reflectTexCoord;
 	float4 reflectionColor;
 	
-	uint numTexTrans, dummy;
-    texTransforms.GetDimensions(numTexTrans, dummy);
+//	uint numTexTrans, dummy;
+//    texTransforms.GetDimensions(numTexTrans, dummy);
+//	
+//	float4 col = texture2d.Sample(g_samLinear, mul(In.TexCd.xy,texTransforms[0%numTexTrans]));
+//	float4 specIntensity = specTex.Sample(g_samLinear, mul(In.TexCd.xy,texTransforms[1%numTexTrans]));
+//	float4 diffuse = diffuseTex.Sample(g_samLinear, mul(In.TexCd.xy,texTransforms[2%numTexTrans]));
+
+	float4 col = texture2d.Sample(g_samLinear,In.TexCd.xy);
+	float4 specIntensity = specTex.Sample(g_samLinear, In.TexCd.xy);
+	float4 diffuse = diffuseTex.Sample(g_samLinear, In.TexCd.xy);
 	
-	float4 col = texture2d.Sample(g_samLinear, mul(In.TexCd.xy,texTransforms[0%numTexTrans]));
-	float4 specIntensity = specTex.Sample(g_samLinear, mul(In.TexCd.xy,texTransforms[1%numTexTrans]));
-	float4 diffuse = diffuseTex.Sample(g_samLinear, mul(In.TexCd.xy,texTransforms[2%numTexTrans]));
-	
-	if(diffuseMode == 1 || diffuseMode ==2){
+	{
+	if(diffuseMode == 1 || diffuseMode ==2)
 		specIntensity *= length(diffuse.rgb);
 	}
 	
@@ -214,7 +219,7 @@ float4 PS_SuperphongBump(vs2ps In): SV_Target
 	
 //  BumpMap
 ///////////////////////////////////////
-	float4 bumpMap = normalTex.Sample(g_samLinear, mul(In.TexCd.xy,texTransforms[3%numTexTrans]));
+	float4 bumpMap = normalTex.Sample(g_samLinear, In.TexCd.xy);
 	
 	bumpMap = (bumpMap * 2.0f) - 1.0f;
 	
@@ -316,7 +321,7 @@ float4 PS_SuperphongBump(vs2ps In): SV_Target
 	lightMap.GetDimensions(d,d,textureCount);
 	
 	uint numSpotRange, dummySpot;
-    texTransforms.GetDimensions(numSpotRange, dummySpot);
+    spotRange.GetDimensions(numSpotRange, dummySpot);
 	
 	uint numlAmb, dummyAmb;
     lAmb.GetDimensions(numlAmb, dummyAmb);
@@ -412,12 +417,12 @@ float4 PS_Superphong(vs2ps In): SV_Target
 	float2 reflectTexCoord;
     float4 reflectionColor;
 	
-	uint numTexTrans, dummy;
-    texTransforms.GetDimensions(numTexTrans, dummy);
+//	uint numTexTrans, dummy;
+//    texTransforms.GetDimensions(numTexTrans, dummy);
 	
-	float4 col = texture2d.Sample(g_samLinear, mul(In.TexCd.xy,texTransforms[0%numTexTrans]));
-	float4 specIntensity = specTex.Sample(g_samLinear, mul(In.TexCd.xy,texTransforms[1%numTexTrans]));
-	float4 diffuse = diffuseTex.Sample(g_samLinear, mul(In.TexCd.xy,texTransforms[2%numTexTrans]));
+	float4 col = texture2d.Sample(g_samLinear, In.TexCd.xy);
+	float4 specIntensity = specTex.Sample(g_samLinear, In.TexCd.xy);
+	float4 diffuse = diffuseTex.Sample(g_samLinear, In.TexCd.xy);
 	
 	if(diffuseMode == 1 || diffuseMode ==2){
 		specIntensity *= length(diffuse.rgb);
@@ -521,7 +526,7 @@ float4 PS_Superphong(vs2ps In): SV_Target
 	lightMap.GetDimensions(d,d,textureCount);
 	
 	uint numSpotRange, dummySpot;
-    texTransforms.GetDimensions(numSpotRange, dummySpot);
+    spotRange.GetDimensions(numSpotRange, dummySpot);
 	
 	uint numlAmb, dummyAmb;
     lAmb.GetDimensions(numlAmb, dummyAmb);
