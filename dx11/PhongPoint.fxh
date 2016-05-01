@@ -16,7 +16,7 @@ float lRange <String uiname="Light Range"; float uimin=0.0;> = 10.0;
 
 //phong point function
 float4 PhongPoint(float3 PosW, float3 NormV, float3 ViewDirV, float3 LightDirV, float3 lightPos, float lAtt0,
-				  float lAtt1, float lAtt2, float4 lAmb, float4 lDiff, float4 lSpec, float specIntensity)
+				  float lAtt1, float lAtt2, float4 lDiff, float4 lSpec, float specIntensity)
 {
 
     float d = distance(PosW, lightPos);

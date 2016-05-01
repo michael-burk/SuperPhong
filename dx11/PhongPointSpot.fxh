@@ -14,7 +14,7 @@
 
 //phong point function
 float4 PhongPointSpot(float3 PosW, float3 NormV, float3 ViewDirV, float3 LightDirV, float3 lightPos, float lAtt0,
-				  float lAtt1, float lAtt2, float4 lAmb, float4 lDiff, float4 lSpec, float specIntensity, float2 projectTexCoord, float4 projectionColor)
+				  float lAtt1, float lAtt2, float4 lDiff, float4 lSpec, float specIntensity, float2 projectTexCoord, float4 projectionColor)
 {
 
     float d = distance(PosW, lightPos);
