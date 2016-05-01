@@ -110,11 +110,11 @@ struct vs2ps
 vs2ps VS_Bump(
     float4 PosO: POSITION,
     float3 NormO: NORMAL,
-    float4 TexCd : TEXCOORD0,
+    float4 TexCd : TEXCOORD0
 //  BumpMap (Remove last Comma if commented)
 ///////////////////////////////////////
-	float3 tangent : TANGENT,
-    float3 binormal : BINORMAL
+	//float3 tangent : TANGENT,
+   // float3 binormal : BINORMAL
 ///////////////////////////////////////
 )
 {
@@ -132,12 +132,12 @@ vs2ps VS_Bump(
 //  BumpMap
 ///////////////////////////////////////
 	// Calculate the tangent vector against the world matrix only and then normalize the final value.
-    Out.tangent = mul(tangent, tW);
-    Out.tangent = normalize(Out.tangent);
+  //  Out.tangent = mul(tangent, tW);
+ //   Out.tangent = normalize(Out.tangent);
 
     // Calculate the binormal vector against the world matrix only and then normalize the final value.
-    Out.binormal = mul(binormal, tW);
-    Out.binormal = normalize(Out.binormal);
+ //   Out.binormal = mul(binormal, tW);
+ //   Out.binormal = normalize(Out.binormal);
 ///////////////////////////////////////
 
 //	position (projected)
@@ -188,6 +188,40 @@ vs2ps VS(
 // -----------------------------------------------------------------------------
 
 
+// http://www.thetenthplanet.de/archives/1180
+float3x3 cotangent_frame(float3 N, float3 p, float3 uv)
+{
+    // get edge vectors of the pixel triangle
+    float3 dp1 = ddx( p );
+    float3 dp2 = ddy( p );
+    float2 duv1 = ddx( uv );
+    float2 duv2 = ddy( uv );
+ 	
+    // solve the linear system
+    float3 dp2perp = cross( dp2, N );
+    float3 dp1perp = cross( N, dp1 );
+    float3 T = dp2perp * duv1.x + dp1perp * duv2.x;
+    float3 B = dp2perp * duv1.y + dp1perp * duv2.y;
+ 
+    // construct a scale-invariant frame 
+    float invmax = rsqrt( max( dot(T,T), dot(B,B) ) );
+    return float3x3( T * invmax, B * invmax, N );
+}
+ 
+float3 perturb_normal( float3 N, float3 V, float2 texcoord, float3 norm )
+{
+    // assume N, the interpolated vertex normal and 
+    // V, the view vector (vertex to eye)
+   float3 map = normalTex.Sample(g_samLinear, texcoord).xyz;
+   //float3 map = texture(tex1, texcoord ).xyz;
+  	//map = map * 255./127. - 128./127. ;
+	map = norm;
+
+    float3x3 TBN = cotangent_frame(N, -V, float3(texcoord.xy,0));
+    return normalize(mul(TBN,map));
+}
+
+
 float4 PS_SuperphongBump(vs2ps In): SV_Target
 {	
 	
@@ -220,23 +254,29 @@ float4 PS_SuperphongBump(vs2ps In): SV_Target
 	
 //  BumpMap
 ///////////////////////////////////////
-	float4 bumpMap = normalTex.Sample(g_samLinear, In.TexCd.xy);
+	float4 bumpMap = normalTex.Sample(g_samLinear, mul(In.TexCd.xy,texTransforms[3%numTexTrans]));
 	
 	bumpMap = (bumpMap * 2.0f) - 1.0f;
+	
 	
     float3 bumpNormal = (bumpMap.x * In.tangent) + (bumpMap.y * In.binormal) + (bumpMap.z * In.NormW);
 
     bumpNormal = normalize(bumpNormal);
+	float3 Vn = normalize(camPos - In.PosW);
+	bumpNormal = perturb_normal( In.NormV, Vn, mul(In.TexCd.xy,texTransforms[3%numTexTrans]), bumpMap );
 	
 	In.NormV += bumpNormal*bumpy;
 	
     float3 Tn = normalize(In.tangent);
     float3 Bn = normalize(In.binormal);
 	float3 Nb = Nn + (bumpMap.x * Tn + bumpMap.y * Bn)*bumpy;
+	//Nb = (perturb_normal( Nn, Vn, mul(In.TexCd.xy,texTransforms[3%numTexTrans])));
+	Nb = (perturb_normal( Nn, Vn, mul(In.TexCd.xy,texTransforms[3%numTexTrans]), bumpMap));
+	
 ///////////////////////////////////////
 	
 // Reflection and RimLight
-	float3 Vn = normalize(camPos - In.PosW);
+	//float3 Vn = normalize(camPos - In.PosW);
 	
 //BumpMap
 ///////////////////////////////////////
@@ -611,6 +651,9 @@ float4 PS_Superphong(vs2ps In): SV_Target
 	col *= float4((newCol * Color.rgb), Alpha);
     return col;
 }
+
+
+
 
 // -----------------------------------------------------------------------------
 // TECHNIQUES:
