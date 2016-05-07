@@ -36,7 +36,7 @@ cbuffer cbPerObject : register (b1)
 	
 	float spotFade = 1;
 	float bumpy = 1;
-	float2 reflective <String uiname="Reflective/Diffuse";float uimin=0.0; float uimax=30;> = 1 ;
+	float2 reflective <String uiname="Reflective/Diffuse";float uimin=0.0; float uimax=1;> = 1 ;
 	bool refraction <bool visible=false;> = false;
 	float refractionIndex <bool visible=false;> = 1.2;
 	bool BPCM <bool visible=false;> = false;
@@ -212,7 +212,7 @@ float4 PS_SuperphongBump(vs2ps In): SV_Target
 	
 	{
 	if(diffuseMode == 1 || diffuseMode ==2)
-		specIntensity *= length(diffuse.rgb);
+		specIntensity *= saturate(length(diffuse.rgb));
 	}
 	
 	float3 newCol;
@@ -314,8 +314,8 @@ float4 PS_SuperphongBump(vs2ps In): SV_Target
 		
 	
 	if(diffuseMode == 0 || diffuseMode ==2){
-			reflColor *= length(diffuse.rgb);
-			reflColorNorm *= length(diffuse.rgb);			
+			reflColor *= saturate(length(diffuse.rgb));
+			reflColorNorm *= saturate(length(diffuse.rgb));			
 	} 
 	
 	uint d,textureCount;
@@ -389,12 +389,12 @@ float4 PS_SuperphongBump(vs2ps In): SV_Target
 	}
 
 	if(reflectMode == 0){
-		newCol *= (reflColor+iridescenceColor)*reflective.x*specIntensity;
+		newCol *= (reflColor*iridescenceColor)*reflective.x*saturate(specIntensity);
 		newCol += reflColorNorm*reflective.y;
 		newCol += (fresRim * RimColor);
 		
 	} else{
-		newCol += (reflColor+iridescenceColor)*reflective.x*specIntensity;
+		newCol += (reflColor*iridescenceColor)*reflective.x*saturate(specIntensity);
 		newCol += reflColorNorm*reflective.y;
 		newCol += (fresRim * RimColor);
 	}	
@@ -426,8 +426,8 @@ float4 PS_Superphong(vs2ps In): SV_Target
 	//float4 specIntensity = specTex.Sample(g_samLinear, In.TexCd.xy);
 	//float4 diffuse = diffuseTex.Sample(g_samLinear, In.TexCd.xy);
 	
-	if(diffuseMode == 1 || diffuseMode ==2){
-		specIntensity *= length(diffuse.rgb);
+	if(diffuseMode == 1 || diffuseMode == 2){
+		specIntensity *= saturate(length(diffuse.rgb));
 	}
 	
 	
@@ -516,9 +516,9 @@ float4 PS_Superphong(vs2ps In): SV_Target
 
 	
 	
-	if(diffuseMode == 0 || diffuseMode ==2){
-			reflColor *= length(diffuse.rgb);
-			reflColorNorm *= length(diffuse.rgb);	
+	if(diffuseMode == 0 || diffuseMode == 2){
+			reflColor *= saturate(length(diffuse.rgb));
+			reflColorNorm *= saturate(length(diffuse.rgb));	
 	} 
 	
 	
@@ -594,15 +594,15 @@ float4 PS_Superphong(vs2ps In): SV_Target
 		newCol += lAmb.rgb;
 		
 	}
-
+	
 	
 	if(reflectMode == 0){
-		newCol *= (reflColor+iridescenceColor)*reflective.x*specIntensity;
+		newCol *= saturate(reflColor*iridescenceColor)*reflective.x*saturate(specIntensity);
 		newCol += reflColorNorm * reflective.y;
 		newCol += (fresRim * RimColor);
 		
 	} else{
-		newCol += (reflColor+iridescenceColor)*reflective.x*specIntensity;
+		newCol += (reflColor*iridescenceColor)*reflective.x*saturate(specIntensity);
 		newCol += reflColorNorm * reflective.y;
 		newCol += (fresRim * RimColor);
 	}	
