@@ -64,6 +64,7 @@ cbuffer cbPerObject : register (b1)
 	Texture2D specTex <string uiname="SpecularMap"; >;
 	Texture2D normalTex <string uiname="NormalMap"; >;
 	Texture2D diffuseTex <string uiname="DiffuseMap"; >;
+	bool useIridescence = false;
 	Texture2D iridescence <string uiname="Iridescence"; >;
 	TextureCube cubeTexRefl <string uiname="CubeMap Refl"; >;
 	TextureCube cubeTexIrradiance <string uiname="CubeMap Irradiance"; >;
@@ -310,7 +311,7 @@ float4 PS_SuperphongBump(vs2ps In): SV_Target
 
 		float inverseDotView = 1.0 - max(dot(Nb,Vn),0.0);
 		float4 iridescenceColor = float4(0,0,0,0);
-		iridescenceColor = iridescence.Sample(g_samLinear, float2(inverseDotView,0))*fresRefl;
+		if (useIridescence) iridescenceColor = iridescence.Sample(g_samLinear, float2(inverseDotView,0))*fresRefl;
 		
 	
 	if(diffuseMode == 0 || diffuseMode ==2){
@@ -389,12 +390,12 @@ float4 PS_SuperphongBump(vs2ps In): SV_Target
 	}
 
 	if(reflectMode == 0){
-		newCol *= (reflColor*iridescenceColor)*reflective.x*saturate(specIntensity);
+		newCol *= (reflColor+iridescenceColor)*reflective.x*saturate(specIntensity);
 		newCol += reflColorNorm*reflective.y;
 		newCol += (fresRim * RimColor);
 		
 	} else{
-		newCol += (reflColor*iridescenceColor)*reflective.x*saturate(specIntensity);
+		newCol += (reflColor+iridescenceColor)*reflective.x*saturate(specIntensity);
 		newCol += reflColorNorm*reflective.y;
 		newCol += (fresRim * RimColor);
 	}	
@@ -500,7 +501,6 @@ float4 PS_Superphong(vs2ps In): SV_Target
 	float4 reflColor = float4(0,0,0,0);
 	float4 reflColorNorm = float4(0,0,0,0);
 	float4 refrColor = float4(0,0,0,0);
-
 	
 
 		
@@ -512,7 +512,7 @@ float4 PS_Superphong(vs2ps In): SV_Target
 	
 		float inverseDotView = 1.0 - max(dot(Nn,Vn),0.0);
 		float4 iridescenceColor = float4(0,0,0,0);
-		iridescenceColor = iridescence.Sample(g_samLinear, float2(inverseDotView,0))*fresRefl;
+		if (useIridescence) iridescenceColor = iridescence.Sample(g_samLinear, float2(inverseDotView,0))*fresRefl;
 
 	
 	
@@ -597,12 +597,12 @@ float4 PS_Superphong(vs2ps In): SV_Target
 	
 	
 	if(reflectMode == 0){
-		newCol *= saturate(reflColor*iridescenceColor)*reflective.x*saturate(specIntensity);
+		newCol *= saturate(reflColor+iridescenceColor)*reflective.x*saturate(specIntensity);
 		newCol += reflColorNorm * reflective.y;
 		newCol += (fresRim * RimColor);
 		
 	} else{
-		newCol += (reflColor*iridescenceColor)*reflective.x*saturate(specIntensity);
+		newCol += (reflColor+iridescenceColor)*reflective.x*saturate(specIntensity);
 		newCol += reflColorNorm * reflective.y;
 		newCol += (fresRim * RimColor);
 	}	
